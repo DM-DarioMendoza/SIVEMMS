@@ -1,0 +1,119 @@
+﻿
+function post(webMethod, succes) {
+    $.filtro.cveInstitucion = obtenerValorCbo("#cboInstitucion");
+    $.filtro.cveEntidad = obtenerValorCbo("#cboEntidad");
+    $.filtro.cveJurisdiccion = obtenerValorCbo("#cboJurisdiccion");
+    $.filtro.cveMunicipio = obtenerValorCbo("#cboMunicipio");
+    $.filtro.clues = obtenerValorCbo("#cboUS");
+    
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        data: '{ "PoFiltros": ' + JSON.stringify($.filtro)+ ' }',
+        success: succes,
+        error: OnErrorCall1_
+    });
+
+    function OnErrorCall1_(response) {
+        //alert("Ocurrió un Error!");
+        console.log(response);
+        return true;
+    }
+}
+
+function postPoblarCboInstitucion(cbo) {
+    var succes = function (response) {
+        var aData = response.d;
+
+        $(cbo)
+            .find('option')
+            .remove()
+            .end();
+            
+        $.each(aData, function () {
+            $(cbo).append($("<option/>").val(this.clave).text(this.descripcion));
+        });
+
+        $(cbo)
+            .append('<option value="-1" selected="selected">Todas</option>')
+            .val('-1');
+    };
+
+    post("Cesarias.aspx/wmCboInstitucion", succes);
+}
+
+function cargarCombos() {
+    postPoblarCboInstitucion("#cboInstitucion");
+    limpiarCombo("#cboEntidad", "Todas");
+    limpiarCombo("#cboJurisdiccion", "Todas");
+    limpiarCombo("#cboMunicipio", "Todos");
+    limpiarCombo("#cboUS", "Todas");
+    
+}
+
+function cboInstitucionChange() {
+    limpiarCombo("#cboEntidad", "Todas");
+    limpiarCombo("#cboJurisdiccion", "Todas");
+    limpiarCombo("#cboMunicipio", "Todas");
+    limpiarCombo("#cboUS", "Todas");
+    postPoblarComboDep("#cboInstitucion", "#cboEntidad", "EmbarazosSinMorbilidad.aspx/wmCboEntidad");
+    cargarPrenatal();
+}
+
+function cboEntidadChange() {
+    limpiarCombo("#cboJurisdiccion", "Todas");
+    limpiarCombo("#cboMunicipio", "Todos");
+    limpiarCombo("#cboUS", "Todas");
+    postPoblarComboDep("#cboEntidad", "#cboJurisdiccion", "EmbarazosSinMorbilidad.aspx/wmCboJurisdiccion");
+    cargarPrenatal();
+}
+
+function cboJurisdiccionChange() {
+    limpiarCombo("#cboMunicipio", "Todas");
+    limpiarCombo("#cboUS", "Todas");
+    postPoblarComboDep("#cboJurisdiccion", "#cboMunicipio", "EmbarazosSinMorbilidad.aspx/wmCboMunicipio");
+    cargarPrenatal();
+}
+
+function cboMunicipioChange() {
+
+    limpiarCombo("#cboUS", "Todas");
+    postPoblarComboDep("#cboMunicipio", "#cboUS", "EmbarazosSinMorbilidad.aspx/wmCboUS");
+    cargarPrenatal();
+}
+
+function cboUSChange() {
+    cargarPrenatal();
+}
+
+
+//<%--ℙ𝕣𝕖𝕟𝕒𝕥𝕒𝕝--%>
+function postGraficaBarra(PoDiv, PoWM) {
+    var succes = function (response) {
+        //$("#lblCesariasTotal").text(response.d.valores[0]);
+        //$("#lblCesariasTotalPorc").text(response.d.valores[1]);
+        pintarGraficaBarra(PoDiv, response.d)
+    };
+    post(PoWM, succes)
+}
+function cargarPrenatal() {
+    postGraficaBarra("#dvPrenatal", "Cesarias.aspx/wmPrenatal");
+};
+
+//<%--ℙ𝕣𝕖𝕟𝕒𝕥𝕒𝕝--%>
+
+
+
+/*Page load*/
+$(document).ready(function () {
+    $.filtro = {
+        cveInstitucion :-1,
+        cveEntidad: -1,
+        cveJurisdiccion: -1,
+        cveMunicipio: -1,
+        clues: -1
+    };
+    cargarCombos();
+    cargarPrenatal();
+});

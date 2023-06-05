@@ -1,0 +1,88 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="IntroMaster.master.cs" Inherits="IntroMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Tablero SIVEMMS</title>
+    <script src="../../Scripts/jquery-v3.3.1.min.js"></script>
+   <script type="text/javascript" src="../../Scripts/bootstrap.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i" rel="stylesheet"   />
+<link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,400,500,600" rel="stylesheet" />
+<link href="../css/bootstrap.min.css" rel="stylesheet"   />
+
+<link href="../css/sivemms.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="../images/logo_sivemms_ico.svg" />
+</head>
+
+    
+<body>
+    <form id="form1" runat="server">
+        <!--Cabeza-->
+	<div class="cab-sivemms fixed-top">
+        <div class="container-fluid pl-4 pr-4">
+			<div class="row d-flex align-items-center">
+				<div class="col-lg-8 col-md-8">
+					<h1 class="cab"><img src="../../images/logo_sivemms.svg" alt="SIVEMMS" class="logo-sivemms-cab" /></h1>
+				</div>
+				<div class="col-lg-4 col-md-4 sm-hide">
+					<img src="../../images/SINAVE_2.jpg" alt="SS" class="logos-ss-dge" /> 
+				</div>
+			</div>
+		</div>
+
+                                                          <%--Create a Scroll Indicator--%>
+                                                        <div class="headernav">
+                                                            <div class="progressnav-container">
+                                                            <div class="progressnav-bar progressnav-bar-striped progressnav-bar-animated" id="myBar"></div>
+                                                          </div>
+                                                        </div>
+                                                                    <script>
+                                                        // When the user scrolls the page, execute myFunction 
+                                                        window.onscroll = function() {myFunction()};
+                                                        
+                                                        function myFunction() {
+                                                          var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                                                          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                                                          var scrolled = (winScroll / height) * 100;
+                                                          document.getElementById("myBar").style.width = scrolled + "%";
+                                                        }
+                                                        </script>
+                                                        
+                                                        <%--Create a Scroll Indicator--%>
+
+	</div>
+
+        <!--./Cabeza-->
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+<div class="container-fluid w98 mt-5">
+   <!--Pie-->
+   <div class="row">
+      <div class="col-12">
+         <hr />
+      </div>
+      <div class="col-12 text-center pt-2 pb-5">
+         <p style="font-size: .8rem">2018 &reg; Desarrollado por Fundación Carlos Slim &reg; Todos los derechos reservados </p>
+      </div>
+   </div>
+   <!--/.Pie-->
+</div>
+
+
+
+    </form>
+
+    <script type="text/javascript">
+        $('#combos').scrollToFixed({ marginTop: 70 });
+    </script>
+</body>
+</html>
